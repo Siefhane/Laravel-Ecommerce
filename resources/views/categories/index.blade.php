@@ -20,5 +20,8 @@
   </div>
 </div>
 @endforeach
+<div class="d-flex justify-content-center">
+    {{ $categories->links('pagination::bootstrap-4') }}
+</div>
 </div>
 @endsection

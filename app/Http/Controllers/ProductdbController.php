@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\products;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 
 class ProductdbController extends Controller
 {
@@ -25,35 +28,10 @@ class ProductdbController extends Controller
     }
     function store()
     {
-        //$imageFile = request()->file('image').['name'];
-        //$imageFile->storeAs('public/images', $filename);
 
-        $title = \request()->get('title');
-        $description = \request()->get('description');
-        $price = \request()->get('price');
-        $rating = \request()->get('rating');
-        $brand = \request()->get('brand');
-        $category = \request()->get('category');
-        $image = \request()->get('image');
-        $category_id = \request()->get('category_id');
-
-
-
-        $product = new products();
-        $product->title= $title;
-        $product->description= $description;
-        $product->price= $price;
-        $product->rating= $rating;
-        $product->brand= $brand;
-        $product->category= $category;
-        $product->image= $image;
-        $product->category_id = $category_id;
-
-        //$product->image = $imageFile;
-
-
-        $product->save();
-
+        $request_data= \request()->all();
+        $request_data['creator_id']= Auth::id();
+        $product=products::create($request_data);
         return to_route('products.show', $product->id);
 
     }
