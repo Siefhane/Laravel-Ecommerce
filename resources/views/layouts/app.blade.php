@@ -36,9 +36,16 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+
                         <li class="nav-item">
-                                    <a class="nav-link" href="/home">Home</a>
+                            <a href="{{route('products.index')}}" class="nav-link">Products</a>
+                        </li>                      
+                        <li class="nav-item">
+                            <a href="{{route('category.index')}}" class="nav-link">Category</a>
                         </li>    
+                        <li class="nav-item">
+                            <a href="{{route('categories.archive')}}" class="nav-link">archive</a>
+                        </li> 
                         <li class="nav-item">
                                     <a class="nav-link" href="/contactus">Contact us</a>
                         </li>    

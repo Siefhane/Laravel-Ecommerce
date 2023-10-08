@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
@@ -12,6 +14,11 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct(){
+        $this->middleware('auth')->only(['store', 'update', 'destroy']);
+         $this->middleware(['amazon'])->only(['store', 'update']);
+
+    }
     public function index()
     {
         $categories = Category::paginate(5);
@@ -80,7 +87,22 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        if ($category->trashed()){
+            $category->forceDelete();
+            return to_route('category.index');
+        }
         $category->delete();
+        return to_route('category.index');
+
+    }
+    public function archive(){
+        $categories = Category::onlyTrashed()->paginate(5);
+        return view('categories.archive', ['categories' => $categories]);
+
+    }
+    public function restore(Category $category)
+    {
+        $category->restore();
         return to_route('category.index');
 
     }

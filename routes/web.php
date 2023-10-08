@@ -34,4 +34,7 @@ Route::get('products/{id}/delete', [ProductdbController::class, 'destroy'])->nam
 Route::post('products', [ProductdbController::class, 'store'])->name('products.store');
 Route::get('products/{id}/edit', [ProductdbController::class, 'edit'])->name('products.edit');
 Route::put('products/{id}', [ProductdbController::class, 'update'] )->name('products.update');
-Route::resource('category', CategoryController::class);
+Route::resource('category', CategoryController::class)->withTrashed();
+Route::get('categories/archive', [CategoryController::class,'archive'])->name('categories.archive');
+Route::get('categories/{category}/restore', [CategoryController::class,'restore'])->withTrashed()->name('categories.restore');
+Route::delete('categories/{category}/delete', [CategoryController::class,'destroy'])->withTrashed()->name('categories.destroy');

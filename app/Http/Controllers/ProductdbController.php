@@ -13,6 +13,8 @@ class ProductdbController extends Controller
 {
     function __construct(){
         $this->middleware('auth')->only(['store', 'update', 'destroy']);
+        $this->middleware(['amazon'])->only(['store', 'update']);
+
     }
 
     function index(){
@@ -30,44 +32,62 @@ class ProductdbController extends Controller
         return view('products.create',['categories'=>$categories]);
 
     }
-    function store()
+    function store(Request $request)
     {
-
-        $request_data= \request()->all();
-        $request_data['creator_id']= Auth::id();
-        $product=products::create($request_data);
-        return to_route('products.show', $product->id);
-
+        $request_data = $request->all();
+        $request_data['creator_id'] = Auth::id();
+    
+        if ($request->hasFile("image")) {
+            $image = $request->file("image");
+            $path = $image->store("uploadedfile",'track_logo' );
+            $request_data["image"] = $path;
+        }
+    
+        $product = products::create($request_data);
+        return redirect()->route('products.show', $product->id);
     }
     function edit($id)
     {
         $product = products::findOrFail($id);
-    
-        return view('products.edit', ['product' => $product]);
+        $categories=Category::all();
+        return view('products.edit', ['product' => $product,'categories'=> $categories]);
     }
-    function update($id)
+    function update(Request $request,$id)
 {
     $product = products::find($id);
+    $user= Auth::user();
+    $response = Gate::inspect('update', $product);
+    $admin = Gate::inspect('admin_update', $product);
 
-    $product->title = \request()->get('title');
-    $product->description = \request()->get('description');
-    $product->price = \request()->get('price');
-    $product->rating = \request()->get('rating');
-    $product->brand = \request()->get('brand');
-    $product->category = \request()->get('category');
-    $product->image = \request()->get('image');
-    $product->category_id = \request()->get('category_id');
+    if($response->allowed()|$admin->allowed()) {
+        $request_data = $request->all();
+        $request_data['creator_id'] = Auth::id();
+        if ($request->hasFile("image")) {
+            $image = $request->file("image");
+            $path = $image->store("uploadedfile",'track_logo' );
+            $request_data["image"] = $path;
+            $product->update($request_data);
+            return redirect()->route('products.show', $product->id);
+        }
+    
+        return redirect()->route('products.show', $product->id);
+    }
+    return  abort(403);
 
-
-    $product->save();
-
-    return redirect()->route('products.show', $product->id);
 }
     function destroy( $id)
     {
+        $user= Auth::user();
         $product = products::findorfail($id);
-        $product->delete();
-        return to_route('products.index');
+        $response = Gate::inspect('destroy', $product);
+        $admin = Gate::inspect('admin_update', $product);
+
+        if($response->allowed()|$admin->allowed()) {
+            $product->delete();
+            return to_route('products.index');
+        }
+
+        return  abort(403);
     }
 
 }

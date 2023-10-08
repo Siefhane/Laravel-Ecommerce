@@ -29,7 +29,7 @@
     <label for="floatingInput">Category</label>
     </div>
     <div class="form-floating mb-3">
-    <input name="image" type="text" class="form-control" id="floatingInput">
+    <input name="image" type="file" class="form-control" id="floatingInput">
     <label for="floatingInput">Image</label>
     </div>
     <select class="form-select" name="category_id"aria-label="Default select example">

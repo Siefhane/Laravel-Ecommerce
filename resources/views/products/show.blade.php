@@ -2,7 +2,7 @@
 @section('body')
 <div class="row m-3">
 <div class="card m-2 p-2" style="width: 18rem; height:520px">
-<img src="{{asset('images').'/'.$product->image}}" class="card-img-top" alt="..." style="height:50%">
+<img src="{{asset('images/track_logo/'.$product->image)}}" class="card-img-top" alt="..." style="height:50%">
   <div class="card-body">
     <h5 class="card-title">{{$product->title}}</h5>
     <p class="card-text">{{$product->description}}</p>

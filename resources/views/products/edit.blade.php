@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('body')
-<form method="post" action="{{ route('products.update', $product->id) }}">
+<form method="post" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="form-floating mb-3">
@@ -29,9 +29,16 @@
         <label for="floatingInput">Category</label>
     </div>
     <div class="form-floating mb-3">
-        <input name="image" type="text" class="form-control" id="floatingInput" value="{{ $product->image }}">
+        <input name="image" type="file" class="form-control" id="floatingInput" value="{{ $product->image }}">
         <label for="floatingInput">Image</label>
     </div>
+    <select class="form-select" name="category_id"aria-label="Default select example">
+  <option selected>Open this select menu</option>
+  @foreach($categories as $category)
+  <option value="{{$category->id}}">{{$category->name}}</option>
+  @endforeach
+</select>
+  <br>
     <button type="submit" class="btn btn-primary mb-3">Update</button>
 </form>
 @endsection
