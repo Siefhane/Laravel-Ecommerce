@@ -2,7 +2,9 @@
 @extends('layouts.app')
 
 @section('body')
+@if(\Illuminate\Support\Facades\Auth::id())
 <a href="{{route('products.create')}}" class="btn btn-success">Add New Product</a>
+@endif
 <div class="row m-3">
 @foreach($products as $product)
 <div class="card m-2 p-2" style="width: 18rem; height:520px">

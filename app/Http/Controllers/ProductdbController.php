@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Gate;
 
 class ProductdbController extends Controller
 {
+    function __construct(){
+        $this->middleware('auth')->only(['store', 'update', 'destroy']);
+    }
+
     function index(){
         $products = products::paginate(2);
         return view('products.index',['products'=>$products]);
