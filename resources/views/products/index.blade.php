@@ -18,8 +18,6 @@
     <a href="{{route('products.delete',$product->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product!!')"> Delete</a>
     <a href="{{route('products.edit',$product->id)}}" class="btn btn-success">Edit</a>
     @endif
-
-
   </div>
 </div>
 @endforeach
