@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\api\ProductsController;
 use App\Http\Controllers\ProductdbController;
 use App\Http\Controllers\CategoryController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Models\products;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,3 +70,4 @@ Route::get('/auth/callback', function () {
 
     return redirect('/home');
 });
+##################################API
